@@ -20,7 +20,6 @@ func (bsc *blobStatCollector) Hit() {
 
 func (bsc *blobStatCollector) Miss() {
 	atomic.AddUint64(&bsc.metrics.Requests, 1)
-	atomic.AddUint64(&bsc.metrics.Misses, 1)
 }
 
 func (bsc *blobStatCollector) Metrics() cache.Metrics {

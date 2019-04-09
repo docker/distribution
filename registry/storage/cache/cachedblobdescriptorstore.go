@@ -14,7 +14,6 @@ import (
 type Metrics struct {
 	Requests uint64
 	Hits     uint64
-	Misses   uint64
 }
 
 // Logger can be provided on the MetricsTracker to log errors.
@@ -40,8 +39,10 @@ type cachedBlobStatter struct {
 }
 
 var (
-	// cacheCount is the number of total cache request received/hits/misses
-	cacheCount = prometheus.StorageNamespace.NewLabeledCounter("cache", "The number of cache request received", "type")
+	// cacheRequestCount is the number of total cache requests received.
+	cacheRequestCount = prometheus.StorageNamespace.NewCounter("cache_requests", "The number of cache request received")
+	// cacheRequestCount is the number of total cache requests received.
+	cacheHitCount = prometheus.StorageNamespace.NewCounter("cache_hits", "The number of cache request received")
 )
 
 // NewCachedBlobStatter creates a new statter which prefers a cache and
@@ -64,7 +65,7 @@ func NewCachedBlobStatterWithMetrics(cache distribution.BlobDescriptorService, b
 }
 
 func (cbds *cachedBlobStatter) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
-	cacheCount.WithValues("Request").Inc(1)
+	cacheRequestCount.Inc(1)
 	desc, err := cbds.cache.Stat(ctx, dgst)
 	if err != nil {
 		if err != distribution.ErrBlobUnknown {
@@ -73,13 +74,12 @@ func (cbds *cachedBlobStatter) Stat(ctx context.Context, dgst digest.Digest) (di
 
 		goto fallback
 	}
-	cacheCount.WithValues("Hit").Inc(1)
+	cacheHitCount.Inc(1)
 	if cbds.tracker != nil {
 		cbds.tracker.Hit()
 	}
 	return desc, nil
 fallback:
-	cacheCount.WithValues("Miss").Inc(1)
 	if cbds.tracker != nil {
 		cbds.tracker.Miss()
 	}
