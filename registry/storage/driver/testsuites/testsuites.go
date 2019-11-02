@@ -268,7 +268,7 @@ func (suite *DriverSuite) TestWriteReadStreamsNonUTF8(c *check.C) {
 	suite.writeReadCompareStreams(c, filename, contents)
 }
 
-// TestWriteReadLargeStreams tests that a 5GB file may be written to the storage
+// TestWriteReadLargeStreams tests that a 100MB file may be written to the storage
 // driver safely.
 func (suite *DriverSuite) TestWriteReadLargeStreams(c *check.C) {
 	if testing.Short() {
@@ -279,7 +279,7 @@ func (suite *DriverSuite) TestWriteReadLargeStreams(c *check.C) {
 	defer suite.deletePath(c, firstPart(filename))
 
 	checksum := sha1.New()
-	var fileSize int64 = 5 * 1024 * 1024 * 1024
+	var fileSize int64 = 100 * 1024 * 1024
 
 	contents := newRandReader(fileSize)
 
@@ -483,7 +483,7 @@ func (suite *DriverSuite) TestList(c *check.C) {
 	for i := 0; i < len(childFiles); i++ {
 		childFile := parentDirectory + "/" + randomFilename(int64(8+rand.Intn(8)))
 		childFiles[i] = childFile
-		err := suite.StorageDriver.PutContent(suite.ctx, childFile, randomContents(32))
+		err = suite.StorageDriver.PutContent(suite.ctx, childFile, randomContents(32))
 		c.Assert(err, check.IsNil)
 	}
 	sort.Strings(childFiles)
