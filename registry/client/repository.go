@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"strconv"
 	"strings"
@@ -21,6 +22,7 @@ import (
 	"github.com/docker/distribution/registry/storage/cache"
 	"github.com/docker/distribution/registry/storage/cache/memory"
 	"github.com/opencontainers/go-digest"
+	"golang.org/x/net/publicsuffix"
 )
 
 // Registry provides an interface for calling Repositories, which returns a catalog of repositories.
@@ -68,10 +70,16 @@ func NewRegistry(baseURL string, transport http.RoundTripper) (Registry, error) 
 		return nil, err
 	}
 
+	jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
+	if err != nil {
+		return nil, err
+	}
+
 	client := &http.Client{
 		Transport:     transport,
 		Timeout:       1 * time.Minute,
 		CheckRedirect: checkHTTPRedirect,
+		Jar:           jar,
 	}
 
 	return &registry{
@@ -131,7 +139,7 @@ func (r *registry) Repositories(ctx context.Context, entries []string, last stri
 }
 
 // NewRepository creates a new Repository for the given repository name and base URL.
-func NewRepository(name reference.Named, baseURL string, transport http.RoundTripper) (distribution.Repository, error) {
+func NewRepository(name reference.Named, baseURL string, transport http.RoundTripper, jar http.CookieJar) (distribution.Repository, error) {
 	ub, err := v2.NewURLBuilderFromString(baseURL, false)
 	if err != nil {
 		return nil, err
@@ -140,7 +148,7 @@ func NewRepository(name reference.Named, baseURL string, transport http.RoundTri
 	client := &http.Client{
 		Transport:     transport,
 		CheckRedirect: checkHTTPRedirect,
-		// TODO(dmcgowan): create cookie jar
+		Jar:           jar,
 	}
 
 	return &repository{
