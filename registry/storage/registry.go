@@ -249,8 +249,10 @@ func (repo *repository) Manifests(ctx context.Context, options ...distribution.M
 
 	// See https://github.com/docker/distribution/issues/3322 to get more detail
 	if repo.blobDescriptorCacheProvider != nil {
-		blobDescriptorService := repo.registry.blobStore.statter.(distribution.BlobDescriptorService)
-		blobStore.blobAccessController = blobDescriptorService
+		blobDescriptorService, ok := repo.registry.blobStore.statter.(distribution.BlobDescriptorService)
+		if ok {
+			blobStore.blobAccessController = blobDescriptorService
+		}
 	}
 
 	var v1Handler ManifestHandler
