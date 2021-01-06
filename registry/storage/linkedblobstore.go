@@ -423,6 +423,13 @@ func (lbs *linkedBlobStatter) Clear(ctx context.Context, dgst digest.Digest) (er
 			return err
 		}
 
+		repository, ok := lbs.repository.(*repository)
+		if ok {
+			if repository.blobDescriptorCacheProvider != nil {
+				repository.blobDescriptorCacheProvider.Clear(ctx, dgst)
+			}
+		}
+
 		err = lbs.blobStore.driver.Delete(ctx, blobLinkPath)
 		if err != nil {
 			switch err := err.(type) {
