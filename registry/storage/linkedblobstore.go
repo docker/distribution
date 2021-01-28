@@ -423,6 +423,7 @@ func (lbs *linkedBlobStatter) Clear(ctx context.Context, dgst digest.Digest) (er
 			return err
 		}
 
+		// See https://github.com/docker/distribution/issues/3322 to get more detail
 		repository, ok := lbs.repository.(*repository)
 		if ok {
 			if repository.blobDescriptorCacheProvider != nil {
