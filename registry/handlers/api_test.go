@@ -31,7 +31,7 @@ import (
 	v2 "github.com/docker/distribution/registry/api/v2"
 	storagedriver "github.com/docker/distribution/registry/storage/driver"
 	"github.com/docker/distribution/registry/storage/driver/factory"
-	_ "github.com/docker/distribution/registry/storage/driver/testdriver"
+	_ "github.com/docker/distribution/registry/storage/driver/inmemory"
 	"github.com/docker/distribution/testutil"
 	"github.com/docker/libtrust"
 	"github.com/gorilla/handlers"
@@ -229,7 +229,7 @@ func contains(elems []string, e string) bool {
 func TestURLPrefix(t *testing.T) {
 	config := configuration.Configuration{
 		Storage: configuration.Storage{
-			"testdriver": configuration.Parameters{},
+			"inmemory": configuration.Parameters{},
 			"maintenance": configuration.Parameters{"uploadpurging": map[interface{}]interface{}{
 				"enabled": false,
 			}},
@@ -313,7 +313,7 @@ func TestBlobDelete(t *testing.T) {
 func TestRelativeURL(t *testing.T) {
 	config := configuration.Configuration{
 		Storage: configuration.Storage{
-			"testdriver": configuration.Parameters{},
+			"inmemory": configuration.Parameters{},
 			"maintenance": configuration.Parameters{"uploadpurging": map[interface{}]interface{}{
 				"enabled": false,
 			}},
@@ -2015,8 +2015,8 @@ func newTestEnvMirror(t *testing.T, deleteEnabled bool) *testEnv {
 	upstreamEnv := newTestEnv(t, deleteEnabled)
 	config := configuration.Configuration{
 		Storage: configuration.Storage{
-			"testdriver": configuration.Parameters{},
-			"delete":     configuration.Parameters{"enabled": deleteEnabled},
+			"inmemory": configuration.Parameters{},
+			"delete":   configuration.Parameters{"enabled": deleteEnabled},
 			"maintenance": configuration.Parameters{"uploadpurging": map[interface{}]interface{}{
 				"enabled": false,
 			}},
@@ -2034,8 +2034,8 @@ func newTestEnvMirror(t *testing.T, deleteEnabled bool) *testEnv {
 func newTestEnv(t *testing.T, deleteEnabled bool) *testEnv {
 	config := configuration.Configuration{
 		Storage: configuration.Storage{
-			"testdriver": configuration.Parameters{},
-			"delete":     configuration.Parameters{"enabled": deleteEnabled},
+			"inmemory": configuration.Parameters{},
+			"delete":   configuration.Parameters{"enabled": deleteEnabled},
 			"maintenance": configuration.Parameters{"uploadpurging": map[interface{}]interface{}{
 				"enabled": false,
 			}},
@@ -2529,7 +2529,7 @@ func TestRegistryAsCacheMutationAPIs(t *testing.T) {
 func TestProxyManifestGetByTag(t *testing.T) {
 	truthConfig := configuration.Configuration{
 		Storage: configuration.Storage{
-			"testdriver": configuration.Parameters{},
+			"inmemory": configuration.Parameters{},
 			"maintenance": configuration.Parameters{"uploadpurging": map[interface{}]interface{}{
 				"enabled": false,
 			}},
@@ -2548,7 +2548,7 @@ func TestProxyManifestGetByTag(t *testing.T) {
 
 	proxyConfig := configuration.Configuration{
 		Storage: configuration.Storage{
-			"testdriver": configuration.Parameters{},
+			"inmemory": configuration.Parameters{},
 		},
 		Proxy: configuration.Proxy{
 			RemoteURL: truthEnv.server.URL,
