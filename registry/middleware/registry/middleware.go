@@ -6,7 +6,7 @@ import (
 
 	"github.com/distribution/distribution/v3"
 	"github.com/distribution/distribution/v3/registry/storage"
-	storagedriver "github.com/docker/distribution/v3/registry/storage/driver"
+	storagedriver "github.com/distribution/distribution/v3/registry/storage/driver"
 )
 
 // InitFunc is the type of a RegistryMiddleware factory function and is
