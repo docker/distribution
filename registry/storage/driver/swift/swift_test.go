@@ -24,31 +24,37 @@ var swiftDriverConstructor func(prefix string) (*Driver, error)
 
 func init() {
 	var (
-		username           string
-		password           string
-		authURL            string
-		tenant             string
-		tenantID           string
-		domain             string
-		domainID           string
-		tenantDomain       string
-		tenantDomainID     string
-		trustID            string
-		container          string
-		region             string
-		AuthVersion        int
-		endpointType       string
-		insecureSkipVerify bool
-		secretKey          string
-		accessKey          string
-		containerKey       bool
-		tempURLMethods     []string
+		username                    string
+		password                    string
+		applicationCredentialID     string
+		applicationCredentialName   string
+		applicationCredentialSecret string
+		authURL                     string
+		tenant                      string
+		tenantID                    string
+		domain                      string
+		domainID                    string
+		tenantDomain                string
+		tenantDomainID              string
+		trustID                     string
+		container                   string
+		region                      string
+		AuthVersion                 int
+		endpointType                string
+		insecureSkipVerify          bool
+		secretKey                   string
+		accessKey                   string
+		containerKey                bool
+		tempURLMethods              []string
 
 		swiftServer *swifttest.SwiftServer
 		err         error
 	)
 	username = os.Getenv("SWIFT_USERNAME")
 	password = os.Getenv("SWIFT_PASSWORD")
+	applicationCredentialID = os.Getenv("SWIFT_APPLICATIONCREDENTIALID")
+	applicationCredentialName = os.Getenv("SWIFT_APPLICATIONCREDENTIALNAME")
+	applicationCredentialSecret = os.Getenv("SWIFT_APPLICATIONCREDENTIALSECRET")
 	authURL = os.Getenv("SWIFT_AUTH_URL")
 	tenant = os.Getenv("SWIFT_TENANT_NAME")
 	tenantID = os.Getenv("SWIFT_TENANT_ID")
@@ -87,6 +93,9 @@ func init() {
 		parameters := Parameters{
 			username,
 			password,
+			applicationCredentialID,
+			applicationCredentialName,
+			applicationCredentialSecret,
 			authURL,
 			tenant,
 			tenantID,
