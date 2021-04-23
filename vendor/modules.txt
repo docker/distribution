@@ -84,7 +84,7 @@ github.com/denverdino/aliyungo/cdn/auth
 github.com/denverdino/aliyungo/common
 github.com/denverdino/aliyungo/oss
 github.com/denverdino/aliyungo/util
-# github.com/dgrijalva/jwt-go v3.1.0+incompatible
+# github.com/dgrijalva/jwt-go v3.1.0+incompatible => github.com/dgrijalva/jwt-go v3.1.0+incompatible
 ## explicit
 github.com/dgrijalva/jwt-go
 # github.com/dnaeon/go-vcr v1.0.1
@@ -226,7 +226,7 @@ google.golang.org/cloud
 google.golang.org/cloud/internal
 google.golang.org/cloud/internal/opts
 google.golang.org/cloud/storage
-# google.golang.org/grpc v0.0.0-20160317175043-d3ddb4469d5a
+# google.golang.org/grpc v0.0.0-20160317175043-d3ddb4469d5a => google.golang.org/grpc v0.0.0-20160317175043-d3ddb4469d5a
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/codes
@@ -243,3 +243,5 @@ gopkg.in/check.v1
 # gopkg.in/yaml.v2 v2.4.0
 ## explicit
 gopkg.in/yaml.v2
+# github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go v3.1.0+incompatible
+# google.golang.org/grpc => google.golang.org/grpc v0.0.0-20160317175043-d3ddb4469d5a
