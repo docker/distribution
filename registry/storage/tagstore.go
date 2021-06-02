@@ -112,7 +112,7 @@ func (ts *tagStore) Untag(ctx context.Context, tag string) error {
 		return err
 	}
 
-	if err := ts.blobStore.driver.Delete(ctx, tagPath); err != nil {
+	if err := ts.blobStore.driver.Delete(ctx, tagPath, false); err != nil {
 		switch err.(type) {
 		case storagedriver.PathNotFoundError:
 			return nil // Untag is idempotent, we don't care if it didn't exist
