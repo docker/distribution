@@ -39,6 +39,7 @@ func init() {
 	root, err := ioutil.TempDir("", "driver-")
 	regionEndpoint := os.Getenv("REGION_ENDPOINT")
 	sessionToken := os.Getenv("AWS_SESSION_TOKEN")
+	accelerate := os.Getenv("S3_ACCELERATE")
 	if err != nil {
 		panic(err)
 	}
@@ -77,6 +78,14 @@ func init() {
 			}
 		}
 
+		accelerateBool := true
+		if accelerate != "" {
+			accelerateBool, err = strconv.ParseBool(accelerate)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		parameters := DriverParameters{
 			accessKey,
 			secretKey,
@@ -97,6 +106,7 @@ func init() {
 			driverName + "-test",
 			objectACL,
 			sessionToken,
+			accelerateBool,
 		}
 
 		return New(parameters)
