@@ -92,6 +92,7 @@ type DriverParameters struct {
 	Secure                      bool
 	SkipVerify                  bool
 	V4Auth                      bool
+	LogS3Request                bool
 	ChunkSize                   int64
 	MultipartCopyChunkSize      int64
 	MultipartCopyMaxConcurrency int64
@@ -269,6 +270,23 @@ func FromParameters(parameters map[string]interface{}) (*Driver, error) {
 		return nil, fmt.Errorf("the v4auth parameter should be a boolean")
 	}
 
+	logS3Bool := false
+	logS3Request := parameters["logs3request"]
+	switch logS3Request := logS3Request.(type) {
+	case string:
+		b, err := strconv.ParseBool(logS3Request)
+		if err != nil {
+			return nil, fmt.Errorf("The logs3request parameter should be a boolean")
+		}
+		logS3Bool = b
+	case bool:
+		logS3Bool = logS3Request
+	case nil:
+		// do nothing
+	default:
+		return nil, fmt.Errorf("The logs3request parameter should be a boolean")
+	}
+
 	keyID := parameters["keyid"]
 	if keyID == nil {
 		keyID = ""
@@ -350,6 +368,7 @@ func FromParameters(parameters map[string]interface{}) (*Driver, error) {
 		secureBool,
 		skipVerifyBool,
 		v4Bool,
+		logS3Bool,
 		chunkSize,
 		multipartCopyChunkSize,
 		multipartCopyMaxConcurrency,
@@ -420,6 +439,10 @@ func New(params DriverParameters) (*Driver, error) {
 
 	awsConfig.WithRegion(params.Region)
 	awsConfig.WithDisableSSL(!params.Secure)
+
+	if params.LogS3Request {
+		awsConfig.WithLogLevel(aws.LogDebugWithSigning)
+	}
 
 	if params.UserAgent != "" || params.SkipVerify {
 		httpTransport := http.DefaultTransport
