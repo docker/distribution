@@ -7,12 +7,10 @@ require (
 	github.com/Azure/go-autorest v10.8.1+incompatible // indirect
 	github.com/Shopify/logrus-bugsnag v0.0.0-20171204204709-577dee27f20d
 	github.com/aws/aws-sdk-go v1.34.9
-	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/bshuster-repo/logrus-logstash-hook v1.0.0
-	github.com/bugsnag/bugsnag-go v0.0.0-20141110184014-b1d153021fcd
-	github.com/bugsnag/osext v0.0.0-20130617224835-0dd3f918b21b // indirect
-	github.com/bugsnag/panicwrap v0.0.0-20151223152923-e2c28503fcd0 // indirect
+	github.com/bugsnag/bugsnag-go v2.1.1+incompatible // indirect
+	github.com/bugsnag/bugsnag-go/v2 v2.1.0
 	github.com/denverdino/aliyungo v0.0.0-20190125010748-a747050bb1ba
 	github.com/dgrijalva/jwt-go v0.0.0-20170104182250-a601269ab70c // indirect
 	github.com/dnaeon/go-vcr v1.0.1 // indirect
@@ -23,10 +21,10 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/marstr/guid v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
-	github.com/mitchellh/osext v0.0.0-20151018003038-5e2d6d41470f // indirect
 	github.com/ncw/swift v1.0.47
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.1
