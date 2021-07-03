@@ -31,7 +31,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Tests to ensure nextProtos returns the correct protocols when:
+// TestNextProtos tests to ensure nextProtos returns the correct protocols when:
 // * config.HTTP.HTTP2.Disabled is not explicitly set => [h2 http/1.1]
 // * config.HTTP.HTTP2.Disabled is explicitly set to false [h2 http/1.1]
 // * config.HTTP.HTTP2.Disabled is explicitly set to true [http/1.1]
