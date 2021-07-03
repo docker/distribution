@@ -39,6 +39,7 @@ func init() {
 	root, err := ioutil.TempDir("", "driver-")
 	regionEndpoint := os.Getenv("REGION_ENDPOINT")
 	sessionToken := os.Getenv("AWS_SESSION_TOKEN")
+	useDualStack := os.Getenv("S3_USE_DUALSTACK")
 	if err != nil {
 		panic(err)
 	}
@@ -77,6 +78,14 @@ func init() {
 			}
 		}
 
+		useDualStackBool := false
+		if useDualStack != "" {
+			useDualStackBool, err = strconv.ParseBool(useDualStack)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		parameters := DriverParameters{
 			accessKey,
 			secretKey,
@@ -97,6 +106,7 @@ func init() {
 			driverName + "-test",
 			objectACL,
 			sessionToken,
+			useDualStackBool,
 		}
 
 		return New(parameters)
