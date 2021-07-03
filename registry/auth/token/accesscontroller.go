@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 
@@ -95,13 +96,37 @@ func (ac authChallenge) Status() int {
 	return http.StatusUnauthorized
 }
 
+func buildAutoRedirectURL(r *http.Request) string {
+	var (
+		scheme = "http"
+		host   = r.Host
+	)
+
+	if r.TLS != nil {
+		scheme = "https"
+	} else if len(r.URL.Scheme) > 0 {
+		scheme = r.URL.Scheme
+	}
+
+	if forwardedProto := r.Header.Get("X-Forwarded-Proto"); len(forwardedProto) > 0 {
+		scheme = forwardedProto
+	}
+
+	u := &url.URL{
+		Scheme: scheme,
+		Host:   host,
+		Path:   "/auth/token",
+	}
+	return u.String()
+}
+
 // challengeParams constructs the value to be used in
 // the WWW-Authenticate response challenge header.
 // See https://tools.ietf.org/html/rfc6750#section-3
 func (ac authChallenge) challengeParams(r *http.Request) string {
 	var realm string
 	if ac.autoRedirect {
-		realm = fmt.Sprintf("https://%s/auth/token", r.Host)
+		realm = buildAutoRedirectURL(r)
 	} else {
 		realm = ac.realm
 	}
